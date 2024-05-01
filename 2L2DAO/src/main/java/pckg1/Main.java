@@ -10,6 +10,7 @@ public class Main {
         //String url = "jdbc:postgresql://localhost:5432/postgres";// так хранить данные противопоказано
         //String username ="postgres";// хранить данные следует в отдельном файле расширения yml, или .properties
        // String pswrd = "LAck321laurus";//
+
        try(Connection connection = ConnectionUtil.getConn(); // КОНСТРУКЦИЯ TRY С РЕСУРСАМИ(AUTOCLOSABLE)
            Statement statement = connection.createStatement()){// с помощью этого интерфейса осуществляем формирование запроса к источнику данных
             System.out.println(connection.getSchema()); // выводит название схемы
@@ -25,7 +26,8 @@ public class Main {
        catch (SQLException e) {
            throw new RuntimeException(e);
        }
-        String query = "select id, first_name from people where id between ? and ?";
+        // открыли новое соединение
+        String query = "select id, first_name from people where id between ? and ?"; // все фильмы из заданного промежутка id
         try(Connection connection = ConnectionUtil.getConn(); // КОНСТРУКЦИЯ TRY С РЕСУРСАМИ(AUTOCLOSABLE)
             PreparedStatement statement = connection.prepareStatement(query)) { //открывать дважды соединение
             // в 1 программе крайне не рекомендуется, поскольку это сильно нагружает систему, но в качестве примера можно
